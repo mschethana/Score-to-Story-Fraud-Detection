@@ -94,9 +94,9 @@ Only the 20 most extreme claims in the anomaly distribution are sent to the LLM 
 
 ## Report Screenshots
 
-![Fraud Overview](dashboard_images/fraud_overview.png)
+![Fraud Overview](dashboard_images/Fraud_Overview.png)
 
-![AI Insights](dashboard_images/ai_insights.png)
+![AI Insights](dashboard_images/AI_Insights.png)
 
 ---
 
