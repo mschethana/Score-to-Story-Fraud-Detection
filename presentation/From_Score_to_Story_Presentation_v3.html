@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>From Score to Story</title>
+
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+background:
+radial-gradient(circle at top left,#1E3A8A 0%,transparent 35%),
+radial-gradient(circle at bottom right,#0F766E 0%,transparent 35%),
+#020617;
+
+color:white;
+
+font-family:'Inter',sans-serif;
+
+overflow:hidden;
+
+}
+
+.slide{
+    height:100vh;
+    width:100vw;
+
+    display:none;
+
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    padding:40px;
+
+    overflow:hidden;
+    animation:fadeIn .8s ease;
+
+    
+}
+
+.slide.active{
+
+display:flex;
+
+}
+
+h1{
+
+font-family:'Inter',sans-serif;
+
+font-size:76px;
+
+font-weight:800;
+
+line-height:1.05;
+
+letter-spacing:-2px;
+
+margin-bottom:10px;
+
+background:linear-gradient(
+90deg,
+#67E8F9,
+#38BDF8,
+#818CF8,
+#C084FC
+);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+}
+
+h2{
+
+font-size:32px;
+
+font-weight:400;
+
+color:#CBD5E1;
+
+margin-bottom:40px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,.06);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.1);
+
+padding:35px;
+
+border-radius:25px;
+
+box-shadow:
+
+0 10px 40px rgba(0,0,0,.3);
+
+}
+
+p{
+color:#CBD5E1;
+font-size:26px;
+text-align:center;
+}
+
+.pill-container{
+
+display:flex;
+
+justify-content:center;
+
+gap:25px;
+
+margin-bottom:50px;
+
+}
+
+.pill{
+
+padding:12px 28px;
+
+border-radius:40px;
+
+background:rgba(255,255,255,.08);
+
+border:1px solid rgba(255,255,255,.15);
+
+font-size:18px;
+
+font-weight:500;
+
+color:#E2E8F0;
+
+}
+
+.accent{
+
+width:120px;
+
+height:6px;
+
+border-radius:10px;
+
+background:
+
+linear-gradient(90deg,#38BDF8,#8B5CF6);
+
+margin-bottom:40px;
+
+}
+
+.box{
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.1);
+
+padding:20px 35px;
+
+min-width:180px;
+
+font-size:18px;
+
+border-radius:20px;
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+.box:hover{
+
+transform:translateY(-8px);
+
+box-shadow:
+
+0 15px 40px rgba(56,189,248,.25);
+
+}
+
+.compare-table{
+
+width:90%;
+
+border-collapse:separate;
+
+border-spacing:0 20px;
+
+}
+
+.compare-table td,
+.compare-table th{
+
+padding:25px;
+
+background:rgba(255,255,255,.06);
+
+}
+
+.compare-table th{
+
+font-size:24px;
+
+color:#38BDF8;
+
+}
+
+.dashboard-row{
+
+display:flex;
+
+gap:40px;
+
+justify-content:center;
+
+}
+
+.dashboard-card{
+
+width:45%;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.1);
+
+border-radius:30px;
+
+padding:25px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:flex-start;
+
+min-height:280px;
+
+}
+
+.dashboard-card img{
+
+width:95%;
+
+height:auto;
+
+border-radius:20px;
+
+box-shadow:
+0 20px 50px rgba(0,0,0,.5);
+
+margin-bottom:20px;
+
+}
+
+.footer-note{
+
+margin-top:25px;
+
+font-size:18px;
+
+line-height:1.7;
+
+color:#94A3B8;
+
+text-align:center;
+
+}
+
+.flow{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.arrow-circle{
+
+    width:45px;
+    height:45px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:#38BDF8;
+
+    font-size:26px;
+
+    margin:10px auto;
+
+}
+
+.navigation{
+
+position:fixed;
+
+bottom:40px;
+
+width:100%;
+
+display:flex;
+
+justify-content:space-between;
+
+padding:0 50px;
+
+pointer-events:none;
+
+}
+.navigation button{
+
+pointer-events:auto;
+
+width:70px;
+
+height:70px;
+
+border-radius:50%;
+
+border:1px solid rgba(255,255,255,.15);
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(20px);
+
+color:#38BDF8;
+
+font-size:36px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+.navigation button:hover{
+
+transform:translateY(-5px);
+
+box-shadow:
+
+0 0 30px rgba(56,189,248,.4);
+
+background:
+
+linear-gradient(
+135deg,
+#38BDF8,
+#8B5CF6
+);
+
+color:white;
+
+}
+#fullscreenBtn {
+  position: fixed !important;
+  top: 20px !important;
+  left: 20px !important;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  color: #38BDF8;
+  font-size: 28px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  z-index: 9999 !important; /* Guarantees it stays above the slides */
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+}
+
+#fullscreenBtn:hover {
+  transform: translateY(-5px); /* Removed the translateX(-50%) */
+  background: linear-gradient(135deg, #38BDF8, #8B5CF6);
+  color: white;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
+}
+
+#slideCounter{
+
+position:fixed;
+
+top:30px;
+
+right:40px;
+
+font-size:20px;
+
+color:#94A3B8;
+
+}
+.dashboard-card ul{
+
+list-style:none;
+
+padding:0;
+
+margin-top:15px;
+text-align: left; 
+display: inline-block;
+
+}
+
+.dashboard-card li{
+
+margin-bottom:10px;
+
+font-size:18px;
+
+}
+
+.dashboard-card li::before{
+
+content:" • ";
+
+color:#38BDF8;
+
+font-size:22px;
+
+}
+
+h3{
+
+font-size:24px;
+
+font-weight:700;
+
+margin-bottom:15px;
+
+color:white;
+
+}
+
+.bottom-line{
+
+margin-top:35px;
+
+font-size:28px;
+
+font-weight:500;
+
+color:#CBD5E1;
+
+text-align:center;
+
+}
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+transform:translateX(40px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateX(0);
+
+}
+
+}
+
+.comparison{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:30px;
+
+margin-top:30px;
+
+}
+
+.compare-box{
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.1);
+
+padding:20px 35px;
+
+border-radius:20px;
+
+min-width:220px;
+
+font-size:20px;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+.compare-box:hover{
+
+transform:translateY(-5px);
+
+box-shadow:0 15px 40px rgba(56,189,248,.25);
+
+}
+
+.vs{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+width:80px;
+
+height:80px;
+
+border-radius:50%;
+
+background:linear-gradient(
+135deg,
+#38BDF8,
+#8B5CF6
+);
+
+color:white;
+
+font-size:24px;
+
+font-weight:700;
+
+box-shadow:
+0 0 30px rgba(56,189,248,.4);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <section class="slide active" id="slide1">
+
+        <div class="pill-container">
+
+            <div class="pill">Detect</div>
+            <div class="pill">Explain</div>
+            <div class="pill">Compare</div>
+
+        </div>
+
+        <h1>From Score to Story</h1>
+
+        <h2>AI-Powered Fraud Detection in Power BI</h2>
+
+        <p>
+            Synthetic Data • Isolation Forest • Groq Llama • Power BI
+        </p>
+
+        <div id="slideCounter">
+        1 / 6
+        </div>
+    </section>
+
+    <section class="slide" id="slide2">
+        <div class="container">
+
+            <h1>Solution Architecture</h1>
+
+            <div class="flow">
+
+                <div class="box">
+                    Synthetic Claims Data
+                </div>
+
+                <div class="arrow-circle">↓</div>
+
+                <div class="box">
+                    Isolation Forest
+                </div>
+
+                <div class="arrow-circle">↓</div>
+
+                <div class="box">
+                    Risk Scoring
+                </div>
+
+                <div class="arrow-circle">↓</div>
+
+                <div class="box">
+                    Power BI Report
+                </div>
+
+                <div class="arrow-circle">↓</div>
+
+                <div class="comparison">
+
+                    <div class="compare-box">
+                        Smart Narrative
+                    </div>
+
+                    <div class="vs">
+                        VS
+                    </div>
+
+                    <div class="compare-box">
+                        Groq AI Insights
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="footer-note">
+                Built entirely using free tools
+            </div>
+
+        </div>
+        <div id="slideCounter">
+        2 / 6
+        </div>        
+    </section>
+
+    <section class="slide" id="slide3">
+        <div class="container">
+
+            <h1>Why Isolation Forest</h1>
+
+            <div class="dashboard-row">
+
+                <div class="dashboard-card">
+
+                    <h3>Why it fits</h3>
+
+                    <ul>
+                        <li>No labeled fraud data required</li>
+                        <li>Scales to large claims datasets</li>
+                        <li>No distance or density assumptions</li>
+                        <li>Outputs a continuous risk score</li>
+                    </ul>
+
+                </div>
+
+                <div class="dashboard-card">
+
+                    <h3>How It Works</h3>
+
+                    <ul>
+                        <li>Builds many random decision trees</li>
+                        <li>Each split: random feature, random threshold</li>
+                        <li>Anomalies get isolated in fewer splits</li>
+                        <li>Shorter path length → higher risk score</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="bottom-line">
+                Unsupervised, scalable, and needs no fraud labels
+            </div>
+
+        </div>
+        <div id="slideCounter">
+        3 / 6
+        </div>
+    </section>
+
+    <section class="slide" id="slide4">
+        <div class="container">
+
+            <h1>Why Groq Llama</h1>
+
+            <div class="dashboard-row">
+
+                <div class="dashboard-card">
+
+                    <h3>Why choose it</h3>
+
+                    <ul>
+                        <li>Free tier with very fast inference</li>
+                        <li>LPU hardware → near real-time output</li>
+                        <li>Simple REST API, easy to call from Power Query</li>
+                        <li>Strong reasoning for claim-level narratives</li>
+                    </ul>
+
+                </div>
+
+                <div class="dashboard-card">
+
+                    <h3>How It Works</h3>
+
+                    <ul>
+                        <li>Top risk-scored claims sent as a prompt</li>
+                        <li>Model reasons over claim-level features</li>
+                        <li>Returns a plain-language explanation</li>
+                        <li>Rendered as AI Insights in the dashboard</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <h3 style="margin-top:30px;">Alternatives for Production Data</h3>
+
+            <div class="pill-container">
+
+                <div class="pill">Azure OpenAI</div>
+                <div class="pill">Anthropic Claude</div>
+                <div class="pill">AWS Bedrock</div>
+                <div class="pill">Self-hosted Llama</div>
+
+            </div>
+
+        </div>
+        <div id="slideCounter">
+        4 / 6
+        </div>
+    </section>
+
+    <section class="slide" id="slide5">
+        <div class="container">
+
+            <h1>Groq AI vs Power BI Native</h1>
+
+            <table class="compare-table">
+
+                <tr>
+                    <th>Capability</th>
+                    <th>Groq AI Insights</th>
+                    <th>Smart Narrative / Quick Insights</th>
+                </tr>
+
+                <tr>
+                    <td>Explanation depth</td>
+                    <td>Claim-level reasoning</td>
+                    <td>Portfolio-level summaries</td>
+                </tr>
+
+                <tr>
+                    <td>Customization</td>
+                    <td>Fully custom prompts & logic</td>
+                    <td>Built-in templates only</td>
+                </tr>
+
+                <tr>
+                    <td>Data scope</td>
+                    <td>Any field, custom features</td>
+                    <td>Visual-level aggregates</td>
+                </tr>
+
+                <tr>
+                    <td>Cost</td>
+                    <td>Pay-per-token / free tier</td>
+                    <td>Included in Power BI license</td>
+                </tr>
+
+            </table>
+
+            <div class="bottom-line">
+                Native insights summarize. Groq explains why.
+            </div>
+
+        </div>
+        <div id="slideCounter">
+        5 / 6
+        </div>
+    </section>
+
+    <section class="slide" id="slide6">
+
+        <h1>Now, let's see the actual Report</h1>
+
+        <div class="accent"></div>
+
+        <p>Live walkthrough</p>
+
+        <div id="slideCounter">
+        6 / 6
+        </div>
+    </section>
+
+    <div class="navigation">
+
+    <button id="prevBtn">
+    ←
+    </button>
+
+    <button id="nextBtn">
+    →
+    </button>
+    <button id="fullscreenBtn">
+    ⛶
+    </button>
+</body>
+
+    <script>
+let currentSlide = 0;
+
+const slides = document.querySelectorAll(".slide");
+
+function showSlide(index){
+
+slides.forEach(slide =>
+slide.classList.remove("active"));
+
+slides[index].classList.add("active");
+document.getElementById("slideCounter").innerText =
+(currentSlide+1)+" / "+slides.length;
+
+}
+
+document.getElementById("nextBtn").addEventListener("click",()=>{
+
+if(currentSlide < slides.length-1){
+
+currentSlide++;
+
+showSlide(currentSlide);
+
+}
+
+});
+
+document.getElementById("prevBtn").addEventListener("click",()=>{
+
+if(currentSlide > 0){
+
+currentSlide--;
+
+showSlide(currentSlide);
+
+}
+
+});
+
+document.addEventListener("keydown",(event)=>{
+
+if(event.key==="ArrowRight"){
+
+if(currentSlide < slides.length-1){
+
+currentSlide++;
+
+showSlide(currentSlide);
+
+}
+
+}
+
+if(event.key==="ArrowLeft"){
+
+if(currentSlide>0){
+
+currentSlide--;
+
+showSlide(currentSlide);
+
+}
+
+}
+
+});
+
+
+document.getElementById("fullscreenBtn").addEventListener("click",()=>{
+
+if(!document.fullscreenElement){
+
+document.documentElement.requestFullscreen();
+
+}
+
+else{
+
+document.exitFullscreen();
+
+}
+
+});
+
+</script>
+
+</html>
