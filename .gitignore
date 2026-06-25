@@ -1,0 +1,29 @@
+# Virtual environment
+.venv/
+
+# Environment variables and secrets
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Raw data (keep private or regenerate)
+data/raw/
+
+# Generated outputs
+outputs/
+
+# Ignore large files
+*.pkl
+*.joblib
+
+# Power BI temporary files
+*.pbix.lock
